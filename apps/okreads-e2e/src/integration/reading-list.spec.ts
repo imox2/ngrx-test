@@ -12,3 +12,32 @@ describe('When: I use the reading list feature', () => {
     );
   });
 });
+
+describe('When: I add/remove books', () => {
+  beforeEach(() => {
+    cy.startAt('/');
+  });
+
+  it('Then: I should be able to undo', () => {
+    cy.get('[data-testing="toggle-reading-list"]').click();
+    cy.get('body').then((body) => {        
+      if (body.find('[data-testing="remove-book-button"]').length > 0) { 
+        cy.get('[data-testing="remove-book-button"]').each(button => {
+          cy.wrap(button)
+            .click();
+        });     
+      }     
+    });
+    
+    cy.get('[data-testing="close-reading-list"]').click();
+    cy.get('input[type="search"]').type('javascript');
+
+    cy.get('form').submit();
+
+    cy.get('[data-testing="read-button"]').first().click();
+    cy.get('[data-testing="read-button"]').should('be.disabled')
+    cy.get('.mat-simple-snackbar-action').click();
+    cy.get('[data-testing="read-button"]').should('not.be.disabled')
+  });
+});
+
