@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { Book } from '@tmo/shared/models';
 import { ReadingListService } from './reading-list.service';
 
@@ -28,6 +28,15 @@ export class ReadingListController {
   async removeFromReadingList(@Param() params) {
     try{
     return await this.readingList.removeBook(params.id);
+  } catch (e) {
+    throw new HttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY);
+  } 
+  }
+
+  @Put('/reading-list/:id/finished')
+  async finishBook(@Param() params, @Body() item: Book) {
+    try{
+    return await this.readingList.finishBook(params.id, item);
   } catch (e) {
     throw new HttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY);
   } 

@@ -6,7 +6,8 @@ import {
   getAllBooks,
   ReadingListBook,
   searchBooks,
-  removeFromReadingList
+  removeFromReadingList,
+  getReadingList
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
 import { Book, ReadingListItem } from '@tmo/shared/models';
@@ -23,6 +24,7 @@ export class BookSearchComponent implements OnInit {
   searchForm = this.fb.group({
     term: ''
   });
+  finishedBooks: any;
 
   constructor(
     private readonly store: Store,
@@ -37,6 +39,9 @@ export class BookSearchComponent implements OnInit {
   ngOnInit(): void {
     this.store.select(getAllBooks).subscribe(books => {
       this.books = books.sort((a, b) => (a.title < b.title ? -1 : 1));;
+    });
+    this.store.select(getReadingList).subscribe(books => {
+      this.finishedBooks = books.filter(el => el.finished).map(el=>el.bookId);
     });
   }
 

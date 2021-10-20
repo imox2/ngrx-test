@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getReadingList, removeFromReadingList, addToReadingList } from '@tmo/books/data-access';
+import { getReadingList, removeFromReadingList, addToReadingList, updateReadingList } from '@tmo/books/data-access';
 import { ReadingListItem, Book } from '@tmo/shared/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -22,6 +22,10 @@ export class ReadingListComponent {
     snackBarRef.onAction().subscribe(() => {
       this.store.dispatch(addToReadingList({ book: this.lastRemoved }));
     });
+  }
+
+  markBookAsFinished(item: ReadingListItem) {
+    this.store.dispatch(updateReadingList({ item }));
   }
 
   removeFromReadingList(item: ReadingListItem) {

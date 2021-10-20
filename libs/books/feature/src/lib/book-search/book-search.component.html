@@ -31,8 +31,9 @@
             <strong>Published:</strong> {{ formatDate(book.publishedDate) }}
           </div>
           <p [innerHTML]="book.description"></p>
-          <div>
+          <div *ngIf="finishedBooks.indexOf(book.id)==-1">
             <button
+              
               mat-flat-button
               data-testing="read-button"
               color="primary"
@@ -41,6 +42,16 @@
               aria-label="Want to Read"
             >
               Want to Read
+            </button>
+          </div>
+          <div  *ngIf="finishedBooks.indexOf(book.id)!=-1">
+            <button
+           
+              mat-flat-button
+              color="primary"
+              aria-label="Finished"
+            >
+            Finished  
             </button>
           </div>
         </div>
